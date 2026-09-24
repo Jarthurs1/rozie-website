@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { isDateBookable } from '../utils/bookingAvailability.js'
 import {
   addMonths,
   formatLongDate,
@@ -19,10 +18,10 @@ const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 export default function DateSelector({
   selectedKey,
   onSelect,
-  durationMinutes,
   today,
   minDate,
   maxDate,
+  isDateEnabled,
 }) {
   const [visibleMonth, setVisibleMonth] = useState(() =>
     getMonthStart(selectedKey ? parseDateKey(selectedKey) : today),
@@ -35,10 +34,10 @@ export default function DateSelector({
   const canGoBack = getMonthStart(minDate).getTime() < monthStart.getTime()
   const canGoForward = getMonthStart(maxDate).getTime() > monthStart.getTime()
 
-  function isEnabled(day) {
+  function enabled(day) {
     if (day.getTime() < startOfDay(minDate).getTime()) return false
     if (day.getTime() > startOfDay(maxDate).getTime()) return false
-    return isDateBookable(day, durationMinutes, { today })
+    return Boolean(isDateEnabled?.(day))
   }
 
   return (
@@ -74,7 +73,7 @@ export default function DateSelector({
       <div className="date-selector__grid" role="grid">
         {cells.map(({ date, inMonth }) => {
           const key = toDateKey(date)
-          const enabled = inMonth && isEnabled(date)
+          const canSelect = inMonth && enabled(date)
           const isSelected = selected && isSameDay(date, selected)
           return (
             <button
@@ -84,19 +83,19 @@ export default function DateSelector({
               className={[
                 'date-selector__day',
                 inMonth ? '' : 'is-outside',
-                enabled ? '' : 'is-unavailable',
+                canSelect ? '' : 'is-unavailable',
                 isSelected ? 'is-selected' : '',
               ]
                 .filter(Boolean)
                 .join(' ')}
-              disabled={!enabled}
+              disabled={!canSelect}
               aria-label={
-                enabled
+                canSelect
                   ? formatLongDate(date)
                   : `${formatLongDate(date)}, unavailable`
               }
               aria-selected={isSelected}
-              onClick={() => enabled && onSelect(key)}
+              onClick={() => canSelect && onSelect(key)}
             >
               {date.getDate()}
             </button>

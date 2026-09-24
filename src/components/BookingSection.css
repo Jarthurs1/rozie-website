@@ -57,6 +57,26 @@
   color: var(--muted);
 }
 
+.booking__error,
+.booking__conflict {
+  margin: 1rem 0 0;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+}
+
+.booking__error {
+  background: #f8ecec;
+  color: #7a3030;
+  border: 1px solid rgba(122, 48, 48, 0.18);
+}
+
+.booking__conflict {
+  background: #f8f1e8;
+  color: #7a5530;
+  border: 1px solid rgba(122, 85, 48, 0.2);
+}
+
 .booking__success {
   margin-top: 1.75rem;
   padding: 1.5rem 0 0;

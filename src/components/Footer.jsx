@@ -33,7 +33,7 @@ export default function Footer({ onNavigate }) {
         </nav>
       </div>
       <p className="site-footer__legal">
-        © {year} {SALON.name}. Customer website Phase 1 prototype.
+        © {year} {SALON.name}. Online booking connected to Rozie&apos;s calendar.
       </p>
     </footer>
   )

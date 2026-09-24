@@ -2,154 +2,97 @@
 
 ## Phase status
 
-**PHASE 1 IS FRONTEND / UX ONLY.**  
-**NO LIVE CUSTOMER BOOKING YET.**  
-**NO PRODUCTION AWS CONNECTION.**  
-**DOES NOT MODIFY the stylist/admin application.**
+**Phase 1** — Frontend / UX with mock availability — complete  
+**Phase 2** — Live Public Booking API + shared calendar — **COMPLETE (code + AWS)**  
+**Physical iPhone validation — REQUIRED**
+
+**NO Phase 3 yet.**  
+SES remains **sandbox**. Reminder Lambda remains **DRY_RUN=true**.
 
 ---
 
 ## Project purpose
 
-Public-facing website for **Rozie's Salon** (spelling: **Rozie**, not Rosie).
+Public-facing website for **Rozie's Salon** (spelling: **Rozie**).
 
-Goals for Phase 1:
-
-- Premium boutique salon presence (not a SaaS dashboard)
-- Make availability easy to find
-- Prototype a simple customer booking flow with realistic mock data
-- Structure the app so Phase 2 can connect to a public booking API backed by the same availability rules as Rozie's stylist app
+Customers see real availability from Rozie's shared calendar and can request appointments that appear in her stylist app.
 
 ---
 
-## Technology
-
-| Layer | Choice |
-|-------|--------|
-| UI | React + Vite (JavaScript) |
-| Styles | Plain CSS (minimal dependencies) |
-| Icons | Lucide React |
-| Tests | Vitest |
-| Hosting target | AWS Amplify (`amplify.yml` included) |
-
----
-
-## Design direction
-
-- Soft cream / ivory backgrounds, charcoal text, muted rose accent
-- Display type: Cormorant Garamond; UI/body: Outfit
-- Full-bleed hero with brand-first hierarchy
-- Editorial services list (menu, not pricing cards)
-- Calm spacing, restrained motion, mobile-first
-
----
-
-## Component structure
+## Shared backend architecture
 
 ```
-src/
-  App.jsx
-  components/
-    Header.jsx
-    Hero.jsx
-    BookingSection.jsx
-    ServiceSelector.jsx
-    DateSelector.jsx
-    TimeSelector.jsx
-    CustomerForm.jsx
-    BookingSummary.jsx
-    Services.jsx
-    About.jsx
-    Gallery.jsx
-    LocationHours.jsx
-    Footer.jsx
-    MobileBookCta.jsx
-  data/
-    salon.js
-    services.js
-    schedule.js
-    availability.js
-    gallery.js
-  utils/
-    dateUtils.js
-    bookingAvailability.js
+Stylist App ──(x-rosie-token)──► Data API ──► Private S3
+                                              (clients / appointments / settings)
+Customer Website ──► Public Booking API ──────┘
+                     (no admin token)
 ```
 
----
+| Surface | Auth | Capabilities |
+|---------|------|----------------|
+| Stylist Data API | `x-rosie-token` | Full GET/PUT envelopes |
+| Public Booking API | None (throttled) | `GET /services`, `GET /availability`, `POST /book` only |
 
-## Booking workflow (Phase 1)
-
-1. Select service (sets duration)
-2. Select bookable date (unavailable days greyed / disabled)
-3. Select available start time only
-4. Enter first name, last name, email, phone, optional notes
-5. Review summary
-6. Request Appointment → **mock success** (no AWS write, no email)
-
-Service buttons in the Services section preselect that service and scroll to Book.
+Public API base: `https://plnsqwwz86.execute-api.us-east-1.amazonaws.com`  
+Stack: `rosies-salon-public-booking` (separate from `rosies-salon-data`)  
+Bucket: `rosies-salon-data-rosie-jarthurs-2026` (shared)
 
 ---
 
-## Mock data architecture
+## Monday–Friday public rule
 
-| Module | Responsibility |
-|--------|----------------|
-| `salon.js` | Brand + contact placeholders (address/phone/email/IG are TBD) |
-| `services.js` | Service menu, durations, optional starting prices |
-| `schedule.js` | Weekly hours (aligned with stylist-app prototype defaults) |
-| `availability.js` | Mock busy intervals for upcoming days |
-| `gallery.js` | Hero / about / gallery image URLs + alt text |
-
-Public availability exposes **dates and free start times only** — never client names, appointment details, or block reasons.
+- Website calendar disables Saturday & Sunday
+- `GET /availability` returns no times for weekends
+- `POST /book` rejects weekends with `weekend_not_public` even if called directly
+- **Stylist app weekend capability is unchanged** (Rozie may still book Sat/Sun internally)
 
 ---
 
-## Future AWS integration
+## Availability / booking contracts
 
-Intended architecture:
+### GET /availability?serviceId=&date=
 
-```
-Customer Website
-      ↓
-Public Booking API  (narrowly scoped; no admin token)
-      ↓
-Server-side availability validation + concurrency check
-      ↓
-Existing appointment data (shared with stylist app)
-      ↓
-Rozie's stylist Calendar
+```json
+{ "date": "2026-10-02", "serviceId": "haircut", "durationMinutes": 45, "availableTimes": ["09:00"], "bookable": true }
 ```
 
-**Must not:**
+Range: `?serviceId=&from=&to=` returns `{ days: [{ date, bookable, availableTimes, weekend }] }`
 
-- Let the customer website write S3 directly
-- Embed the stylist app's shared/admin API token in the browser
-- Treat browser-shown availability as a reservation
+Never returns client names, emails, notes, or private appointment records.
 
-### Concurrency (Phase 2+)
+### POST /book
 
-Availability shown in the browser is advisory. Immediately before creating an appointment, the server must revalidate the slot. If Customer A books 2:00 PM first, Customer B's overlapping request must fail atomically / conditionally.
+Body allowlist: `serviceId`, `date`, `startTime`, `firstName`, `lastName`, `email`, `phone`, `notes`
 
----
+Server validates service duration, Mon–Fri, hours, blocks, conflicts.  
+Uses S3 ETag / If-Match optimistic retries.  
+`409 conflict` when the slot was taken.
 
-## Public / private data separation
+Appointments: existing schema, `status: "pending"`, Phase 6 confirmation/reminder fields present (null), `source: "website"`.
 
-| Public (this site) | Private (stylist app) |
-|--------------------|------------------------|
-| Service names & durations | Client records |
-| Open hours presentation | Full calendar details |
-| Free start times | Who is booked / why blocked |
-| Customer-submitted booking requests | Admin confirmation / edits |
+Clients: match by normalized email; otherwise create. Same name alone does not merge.
 
 ---
 
-## Current limitations
+## Environment
 
-- Mock availability only
-- No payments, accounts, or authentication
-- Contact fields intentionally empty until real details are provided
-- Gallery / About imagery and copy are placeholders
-- Success state clearly labels prototype behavior
+```bash
+VITE_PUBLIC_BOOKING_API_URL=https://plnsqwwz86.execute-api.us-east-1.amazonaws.com
+```
+
+**Never** set `VITE_DATA_API_TOKEN` on this site.
+
+---
+
+## Deployment
+
+```bash
+npm run build
+npm run package:amplify-zip
+# Amplify app: rozie-website (d20twgz4us6qx7) us-west-2
+```
+
+Production: https://main.d20twgz4us6qx7.amplifyapp.com
 
 ---
 
@@ -162,4 +105,11 @@ npm test
 npm run build
 ```
 
-Local review: http://localhost:5173/
+---
+
+## Known limitations
+
+- No payments / accounts / CAPTCHA
+- Contact fields still TBD on Location section
+- Reminder emails not sent for website bookings while DRY_RUN=true
+- Physical iPhone pass not yet recorded
