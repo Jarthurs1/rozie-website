@@ -9,11 +9,11 @@ try {
 C:\Cursor Programs\Rozie Website\dist\apple-touch-icon.svg
 '@, 'apple-touch-icon.svg', [IO.Compression.CompressionLevel]::Optimal)
 [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, @'
-C:\Cursor Programs\Rozie Website\dist\assets\index-B4Sumr_i.js
-'@, 'assets/index-B4Sumr_i.js', [IO.Compression.CompressionLevel]::Optimal)
+C:\Cursor Programs\Rozie Website\dist\assets\index-BqbHVgZL.css
+'@, 'assets/index-BqbHVgZL.css', [IO.Compression.CompressionLevel]::Optimal)
 [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, @'
-C:\Cursor Programs\Rozie Website\dist\assets\index-BprDY5u0.css
-'@, 'assets/index-BprDY5u0.css', [IO.Compression.CompressionLevel]::Optimal)
+C:\Cursor Programs\Rozie Website\dist\assets\index-D9eSo-VE.js
+'@, 'assets/index-D9eSo-VE.js', [IO.Compression.CompressionLevel]::Optimal)
 [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, @'
 C:\Cursor Programs\Rozie Website\dist\favicon.svg
 '@, 'favicon.svg', [IO.Compression.CompressionLevel]::Optimal)

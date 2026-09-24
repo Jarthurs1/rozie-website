@@ -1,5 +1,5 @@
 import { SALON } from '../data/salon.js'
-import { ABOUT_IMAGE } from '../data/gallery.js'
+import { ABOUT_IMAGE } from '../data/media.js'
 import './About.css'
 
 export default function About() {

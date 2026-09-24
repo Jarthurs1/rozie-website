@@ -16,7 +16,6 @@ export default function Footer({ onNavigate }) {
             ['home', 'Home'],
             ['services', 'Services'],
             ['about', 'About'],
-            ['gallery', 'Gallery'],
             ['book', 'Book'],
           ].map(([id, label]) => (
             <a
