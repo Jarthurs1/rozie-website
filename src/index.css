@@ -1,0 +1,243 @@
+:root {
+  --cream: #f7f3ee;
+  --cream-deep: #efe8df;
+  --ivory: #fbf8f4;
+  --charcoal: #2c2420;
+  --ink: #3d342f;
+  --muted: #7a6f68;
+  --line: rgba(44, 36, 32, 0.12);
+  --blush: #b76e79;
+  --blush-soft: rgba(183, 110, 121, 0.12);
+  --blush-deep: #9a5560;
+  --white: #ffffff;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Outfit', system-ui, sans-serif;
+  --radius: 0.35rem;
+  --max: 1120px;
+  --header-h: 4.25rem;
+  --ease: 200ms ease;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blush);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.site {
+  min-height: 100dvh;
+  padding-bottom: 5.5rem;
+}
+
+@media (min-width: 768px) {
+  .site {
+    padding-bottom: 0;
+  }
+}
+
+.section {
+  padding: 4.5rem 1.25rem;
+}
+
+.section--tight {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+
+.section__inner {
+  width: min(100%, var(--max));
+  margin: 0 auto;
+}
+
+.section__eyebrow {
+  margin: 0 0 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blush);
+}
+
+.section__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--charcoal);
+}
+
+.section__lead {
+  margin: 0.85rem 0 0;
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.85rem;
+  padding: 0.7rem 1.35rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--ease),
+    color var(--ease),
+    border-color var(--ease),
+    transform 120ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--charcoal);
+  color: var(--ivory);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: #1f1916;
+}
+
+.btn--accent {
+  background: var(--blush);
+  color: #fff;
+}
+
+.btn--accent:hover:not(:disabled) {
+  background: var(--blush-deep);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--charcoal);
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: rgba(44, 36, 32, 0.04);
+}
+
+.btn--text {
+  background: transparent;
+  color: var(--blush-deep);
+  padding-inline: 0.35rem;
+  min-height: auto;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field__hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.field__input {
+  width: 100%;
+  min-height: 2.85rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--charcoal);
+}
+
+.field__input:disabled {
+  background: var(--cream-deep);
+  color: var(--muted);
+}
+
+textarea.field__input {
+  min-height: 5.5rem;
+  resize: vertical;
+}

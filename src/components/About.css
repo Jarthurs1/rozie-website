@@ -1,0 +1,42 @@
+.about {
+  background: var(--cream-deep);
+}
+
+.about__inner {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 860px) {
+  .about__inner {
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: center;
+    gap: 3.5rem;
+  }
+}
+
+.about__media {
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: #d9d0c6;
+  aspect-ratio: 4 / 5;
+}
+
+.about__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about__text {
+  margin: 1rem 0 0;
+  max-width: 34rem;
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.about__note {
+  margin: 1.25rem 0 0;
+  font-size: 0.84rem;
+  color: var(--muted);
+}

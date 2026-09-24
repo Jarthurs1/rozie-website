@@ -1,0 +1,102 @@
+.booking {
+  background: var(--ivory);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.booking__form {
+  margin-top: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.booking__step-title {
+  margin: 0 0 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.booking__hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.booking__layout {
+  display: grid;
+  gap: 1.75rem;
+}
+
+@media (min-width: 900px) {
+  .booking__layout {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 2rem;
+    align-items: start;
+  }
+}
+
+.booking__submit {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+@media (min-width: 600px) {
+  .booking__submit {
+    width: auto;
+    min-width: 14rem;
+  }
+}
+
+.booking__prototype-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.booking__success {
+  margin-top: 1.75rem;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.booking__success-lead {
+  margin: 0 0 1.25rem;
+  max-width: 36rem;
+  color: var(--muted);
+}
+
+.booking__success-summary {
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.booking__success-summary div {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.booking__success-summary dt {
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.booking__success-summary dd {
+  margin: 0.35rem 0 0;
+  font-size: 1.05rem;
+  color: var(--charcoal);
+}
+
+.booking__success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}

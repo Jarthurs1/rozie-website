@@ -1,0 +1,91 @@
+.date-selector {
+  padding: 0.85rem 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+
+.date-selector__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.date-selector__month {
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  color: var(--charcoal);
+}
+
+.date-selector__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--charcoal);
+  cursor: pointer;
+}
+
+.date-selector__arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.date-selector__weekdays,
+.date-selector__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.2rem;
+}
+
+.date-selector__weekdays span {
+  text-align: center;
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.25rem 0;
+}
+
+.date-selector__day {
+  aspect-ratio: 1;
+  min-height: 2.2rem;
+  border: none;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--charcoal);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.date-selector__day.is-outside {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.date-selector__day.is-unavailable:not(.is-outside) {
+  color: #b0a7a1;
+  background: var(--cream-deep);
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.date-selector__day.is-selected:not(:disabled) {
+  background: var(--blush);
+  color: #fff;
+}
+
+.date-selector__chosen {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}

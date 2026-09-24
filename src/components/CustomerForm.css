@@ -1,0 +1,20 @@
+.customer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.customer-form.is-disabled {
+  opacity: 0.55;
+}
+
+.customer-form__row {
+  display: grid;
+  gap: 0.9rem;
+}
+
+@media (min-width: 640px) {
+  .customer-form__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}

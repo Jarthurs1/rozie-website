@@ -1,0 +1,27 @@
+.time-selector {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+@media (min-width: 480px) {
+  .time-selector {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.time-selector__option {
+  min-height: 2.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--charcoal);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.time-selector__option.is-selected {
+  border-color: var(--blush);
+  background: var(--blush-soft);
+  color: var(--blush-deep);
+}

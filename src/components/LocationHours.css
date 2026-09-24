@@ -1,0 +1,95 @@
+.location {
+  background: var(--ivory);
+  border-top: 1px solid var(--line);
+}
+
+.location__inner {
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 860px) {
+  .location__inner {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 3rem;
+  }
+}
+
+.location__contacts {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1.15rem;
+}
+
+.location__contacts li {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  color: var(--blush-deep);
+}
+
+.location__contacts p,
+.location__contacts a {
+  margin: 0;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.location__label {
+  font-size: 0.72rem !important;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted) !important;
+  margin-bottom: 0.2rem !important;
+}
+
+.location__tbd {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.location__hours {
+  padding: 1.25rem 1.3rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  align-self: start;
+}
+
+.location__hours-title {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+.location__hours-list {
+  margin: 0;
+}
+
+.location__hours-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.location__hours-row:last-child {
+  border-bottom: none;
+}
+
+.location__hours-row dt {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.location__hours-row dd {
+  margin: 0;
+  color: var(--muted);
+  text-align: right;
+}
