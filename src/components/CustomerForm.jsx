@@ -76,6 +76,42 @@ export default function CustomerForm({ value, errors, onChange, disabled }) {
         ) : null}
       </label>
 
+      <div className="field field--checkbox">
+        <label className="field__checkbox-row">
+          <input
+            type="checkbox"
+            name="smsOptIn"
+            checked={Boolean(value.smsOptIn)}
+            disabled={disabled}
+            onChange={(e) => update('smsOptIn', e.target.checked)}
+          />
+          <span className="field__checkbox-label">
+            Optional: I agree to receive appointment reminders by text message from
+            Rozie&apos;s Salon Appointment Reminders (Development/Test). Message
+            frequency varies (typically one reminder per appointment). Message and
+            data rates may apply. Reply STOP to unsubscribe or HELP for assistance.
+            Consent is not required to book an appointment.
+          </span>
+        </label>
+        <p className="field__policy-links">
+          <a
+            href="https://main.d2oxpzhi8msliv.amplifyapp.com/sms-privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            SMS Privacy Policy
+          </a>
+          <span aria-hidden="true"> · </span>
+          <a
+            href="https://main.d2oxpzhi8msliv.amplifyapp.com/sms-terms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            SMS Terms and Conditions
+          </a>
+        </p>
+      </div>
+
       <label className="field">
         <span className="field__label">Notes (optional)</span>
         <textarea

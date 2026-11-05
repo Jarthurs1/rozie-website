@@ -78,6 +78,8 @@ export async function submitBooking(payload) {
       email: payload.email,
       phone: payload.phone,
       notes: payload.notes || '',
+      // Optional SMS consent — unchecked by default; never required to book
+      smsOptIn: Boolean(payload.smsOptIn),
     }),
   })
 }

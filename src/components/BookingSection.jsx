@@ -6,9 +6,8 @@ import {
   parseDateKey,
   startOfDay,
   toDateKey,
-  addDays,
 } from '../utils/dateUtils.js'
-import { MAX_BOOKING_DAYS_AHEAD } from '../data/schedule.js'
+import { getBookingHorizonEnd } from '../data/schedule.js'
 import {
   fetchAvailabilityForDate,
   fetchAvailabilityRange,
@@ -28,6 +27,7 @@ const emptyCustomer = {
   email: '',
   phone: '',
   notes: '',
+  smsOptIn: false,
 }
 
 export default function BookingSection({
@@ -38,7 +38,7 @@ export default function BookingSection({
   const range = useMemo(
     () => ({
       start: today,
-      end: addDays(today, MAX_BOOKING_DAYS_AHEAD),
+      end: getBookingHorizonEnd(today),
     }),
     [today],
   )
@@ -221,6 +221,7 @@ export default function BookingSection({
         email: customer.email.trim(),
         phone: customer.phone.trim(),
         notes: customer.notes.trim(),
+        smsOptIn: Boolean(customer.smsOptIn),
       })
       setSubmitted({
         serviceName: result.booking?.service || service.name,
