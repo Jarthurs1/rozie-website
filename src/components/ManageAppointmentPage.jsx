@@ -15,6 +15,7 @@ import {
   fetchAppointment,
   fetchManagedAvailability,
   fetchManagedTimes,
+  fetchSalon,
   requestReschedule,
 } from '../services/publicBookingApi.js'
 import SalonFrame from './SalonFrame.jsx'
@@ -34,6 +35,7 @@ function appointmentSearch() {
 
 export default function ManageAppointmentPage({ token }) {
   const [record, setRecord] = useState(null)
+  const [salonName, setSalonName] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
   const [mode, setMode] = useState(appointmentSearch().get('intent') === 'confirm' ? 'confirm' : 'view')
@@ -63,6 +65,18 @@ export default function ManageAppointmentPage({ token }) {
   useEffect(() => {
     load()
   }, [token])
+
+  useEffect(() => {
+    let ignore = false
+    fetchSalon()
+      .then((data) => {
+        if (!ignore) setSalonName(String(data?.salonName || '').trim())
+      })
+      .catch(() => {})
+    return () => {
+      ignore = true
+    }
+  }, [])
 
   useEffect(() => {
     if (mode !== 'date') return undefined
@@ -115,7 +129,7 @@ export default function ManageAppointmentPage({ token }) {
   const contact = [appointment?.contactPhone, appointment?.contactEmail].filter(Boolean).join(' · ')
 
   return (
-    <SalonFrame salonName={appointment?.salonName || 'Salon'}>
+    <SalonFrame salonName={appointment?.salonName || salonName || 'Salon'}>
     <main className="book-page">
       <section className="book-page__card">
         {loading ? <p>Loading your appointment…</p> : null}
