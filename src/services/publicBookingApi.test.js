@@ -12,9 +12,9 @@ describe('publicBookingApi client', () => {
     vi.unstubAllGlobals()
   })
 
-  it('reports unconfigured when URL missing', () => {
+  it('uses the public booking API when no env URL is set', () => {
     import.meta.env.VITE_PUBLIC_BOOKING_API_URL = ''
-    expect(isPublicBookingConfigured()).toBe(false)
+    expect(isPublicBookingConfigured()).toBe(true)
   })
 
   it('maps 409 conflict to a friendly error', async () => {

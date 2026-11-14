@@ -3,9 +3,16 @@
  * Production must not fall back to mock availability.
  */
 
+const PUBLIC_BOOKING_API_URL =
+  'https://plnsqwwz86.execute-api.us-east-1.amazonaws.com'
+
 function getBaseUrl() {
-  const url = import.meta.env.VITE_PUBLIC_BOOKING_API_URL
-  return typeof url === 'string' ? url.replace(/\/+$/, '') : ''
+  const configured = import.meta.env.VITE_PUBLIC_BOOKING_API_URL
+  const url =
+    typeof configured === 'string' && configured.trim()
+      ? configured
+      : PUBLIC_BOOKING_API_URL
+  return url.replace(/\/+$/, '')
 }
 
 export function isPublicBookingConfigured() {
