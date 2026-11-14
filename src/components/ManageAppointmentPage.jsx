@@ -5,6 +5,7 @@ import {
   addDays,
   formatLongDate,
   formatTimeDisplay,
+  dateKeyFromSelector,
   parseDateKey,
   startOfDay,
   toDateKey,
@@ -43,6 +44,7 @@ export default function ManageAppointmentPage({ token }) {
   const [busy, setBusy] = useState(false)
   const [dateKey, setDateKey] = useState('')
   const [times, setTimes] = useState([])
+  const [timesLoading, setTimesLoading] = useState(false)
   const [startTime, setStartTime] = useState('')
   const [openDates, setOpenDates] = useState(() => new Set())
   const today = useMemo(() => startOfDay(new Date()), [])
@@ -98,12 +100,16 @@ export default function ManageAppointmentPage({ token }) {
   useEffect(() => {
     if (mode !== 'time' || !dateKey) return undefined
     let ignore = false
+    setTimesLoading(true)
     fetchManagedTimes(token, dateKey)
       .then((data) => {
         if (!ignore) setTimes(data.availableTimes || [])
       })
       .catch(() => {
         if (!ignore) setTimes([])
+      })
+      .finally(() => {
+        if (!ignore) setTimesLoading(false)
       })
     return () => {
       ignore = true
@@ -200,8 +206,9 @@ export default function ManageAppointmentPage({ token }) {
             <DateSelector
               selectedKey={dateKey}
               onSelect={(day) => {
-                setDateKey(toDateKey(day))
+                setDateKey(dateKeyFromSelector(day))
                 setStartTime('')
+                setTimes([])
                 setMode('time')
               }}
               today={today}
@@ -213,24 +220,47 @@ export default function ManageAppointmentPage({ token }) {
         ) : null}
         {mode === 'time' ? (
           <>
-            <h2>{dateKey ? formatLongDate(parseDateKey(dateKey)) : 'Choose a time'}</h2>
-            <TimeSelector times={times} value={startTime} onChange={setStartTime} />
+            <h2>Choose a time</h2>
+            <p>{dateKey ? formatLongDate(parseDateKey(dateKey)) : ''}</p>
+            {timesLoading ? <p>Checking available times…</p> : null}
+            {!timesLoading && times.length > 0 ? (
+              <TimeSelector times={times} value={startTime} onChange={setStartTime} />
+            ) : null}
+            {!timesLoading && times.length === 0 ? (
+              <p>No times are open on this day. Choose another date.</p>
+            ) : null}
             <button
               type="button"
               className="btn btn--primary"
-              disabled={!startTime}
+              disabled={!startTime || !times.includes(startTime)}
               onClick={() => setMode('review')}
             >
               Review request
+            </button>
+            <button type="button" className="btn btn--ghost" onClick={() => setMode('date')}>
+              Choose another date
             </button>
           </>
         ) : null}
         {mode === 'review' ? (
           <>
             <h2>Review your request</h2>
-            <p>
-              {formatLongDate(parseDateKey(dateKey))} at {formatTimeDisplay(startTime)}
-            </p>
+            <dl className="book-page__review">
+              <div>
+                <dt>Current appointment</dt>
+                <dd>
+                  {appointment?.service} · {formatLongDate(parseDateKey(appointment?.date))} at{' '}
+                  {formatTimeDisplay(appointment?.startTime)}
+                </dd>
+              </div>
+              <div>
+                <dt>Requested appointment</dt>
+                <dd>
+                  {formatLongDate(parseDateKey(dateKey))} at {formatTimeDisplay(startTime)}
+                </dd>
+              </div>
+            </dl>
+            <p>Your current time stays reserved until the salon approves this request.</p>
             <button
               type="button"
               className="btn btn--primary"
@@ -244,6 +274,9 @@ export default function ManageAppointmentPage({ token }) {
               }}
             >
               Submit Reschedule Request
+            </button>
+            <button type="button" className="btn btn--ghost" disabled={busy} onClick={() => setMode('time')}>
+              Change time
             </button>
           </>
         ) : null}

@@ -14,6 +14,12 @@ export function toDateKey(date) {
   return `${y}-${m}-${day}`
 }
 
+/** DateSelector already returns YYYY-MM-DD. Parsing that string with Date shifts it a day in timezones behind UTC. */
+export function dateKeyFromSelector(value) {
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) return value
+  return toDateKey(value)
+}
+
 export function parseDateKey(key) {
   const [y, m, d] = key.split('-').map(Number)
   return new Date(y, m - 1, d)
