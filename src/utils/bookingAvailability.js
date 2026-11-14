@@ -4,7 +4,6 @@
  */
 
 import {
-  addDays,
   isPastDay,
   parseTimeToMinutes,
   minutesToTime,
@@ -15,7 +14,7 @@ import {
   getHoursForDate,
   isClosedDay,
   SLOT_STEP_MINUTES,
-  MAX_BOOKING_DAYS_AHEAD,
+  getBookingHorizonEnd,
 } from '../data/schedule.js'
 import { getMockBusyByDate } from '../data/availability.js'
 
@@ -70,6 +69,6 @@ export function isDateBookable(date, durationMinutes, options = {}) {
 
 export function getBookableDateRange(today = new Date()) {
   const start = startOfDay(today)
-  const end = addDays(start, MAX_BOOKING_DAYS_AHEAD)
+  const end = getBookingHorizonEnd(today)
   return { start, end }
 }

@@ -3,6 +3,8 @@
  * Live source of truth will later be the shared backend schedule.
  */
 
+import { parseDateKey, startOfDay } from '../utils/dateUtils.js'
+
 export const DAY_KEYS = [
   'sunday',
   'monday',
@@ -24,7 +26,15 @@ export const WEEKLY_HOURS = {
 }
 
 export const SLOT_STEP_MINUTES = 30
+export const BOOKING_HORIZON_END = '2027-12-31'
 export const MAX_BOOKING_DAYS_AHEAD = 42
+
+/** Last bookable day for the public site: through the end of 2027. */
+export function getBookingHorizonEnd(today = new Date()) {
+  const horizon = startOfDay(parseDateKey(BOOKING_HORIZON_END))
+  const start = startOfDay(today)
+  return horizon.getTime() < start.getTime() ? start : horizon
+}
 
 export function getDayKey(date) {
   return DAY_KEYS[date.getDay()]

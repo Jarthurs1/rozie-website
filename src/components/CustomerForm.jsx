@@ -1,6 +1,13 @@
 import './CustomerForm.css'
 
-export default function CustomerForm({ value, errors, onChange, disabled }) {
+export default function CustomerForm({
+  value,
+  errors,
+  onChange,
+  disabled,
+  includeSms = true,
+  includeNotes = true,
+}) {
   function update(field, next) {
     onChange({ ...value, [field]: next })
   }
@@ -76,6 +83,7 @@ export default function CustomerForm({ value, errors, onChange, disabled }) {
         ) : null}
       </label>
 
+      {includeSms ? (
       <div className="field field--checkbox">
         <label className="field__checkbox-row">
           <input
@@ -111,7 +119,9 @@ export default function CustomerForm({ value, errors, onChange, disabled }) {
           </a>
         </p>
       </div>
+      ) : null}
 
+      {includeNotes ? (
       <label className="field">
         <span className="field__label">Notes (optional)</span>
         <textarea
@@ -124,6 +134,7 @@ export default function CustomerForm({ value, errors, onChange, disabled }) {
           onChange={(e) => update('notes', e.target.value)}
         />
       </label>
+      ) : null}
     </div>
   )
 }

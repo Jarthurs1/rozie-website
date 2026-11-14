@@ -52,6 +52,15 @@ async function request(path, options = {}) {
   return data
 }
 
+export async function fetchSalon() {
+  return request('/salon')
+}
+
+export async function lookupCustomer(email) {
+  const q = new URLSearchParams({ email })
+  return request(`/customer?${q}`)
+}
+
 export async function fetchServices() {
   return request('/services')
 }
@@ -78,8 +87,7 @@ export async function submitBooking(payload) {
       email: payload.email,
       phone: payload.phone,
       notes: payload.notes || '',
-      // Optional SMS consent — unchecked by default; never required to book
-      smsOptIn: Boolean(payload.smsOptIn),
+      smsOptIn: false,
     }),
   })
 }

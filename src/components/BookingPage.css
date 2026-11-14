@@ -1,0 +1,64 @@
+.book-page {
+  width: min(100% - 2rem, 32rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+}
+
+.book-page__header h1 {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 0.2rem 0 1rem;
+}
+
+.book-page__brand {
+  margin: 0;
+  color: var(--blush-deep);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
+.book-page__card {
+  display: grid;
+  gap: 1rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1.1rem;
+}
+
+.book-page__card h2,
+.book-page__card p {
+  margin: 0;
+}
+
+.book-page__review {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+}
+
+.book-page__review dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.book-page__review dd {
+  margin: 0.15rem 0 0;
+}
+
+.book-page__error {
+  color: #8a3030;
+  background: #fdecec;
+  border-radius: 0.7rem;
+  padding: 0.75rem 0.9rem;
+}
+
+.book-page .btn {
+  width: 100%;
+}
