@@ -21,6 +21,7 @@ import {
   lookupCustomer,
   submitBooking,
 } from '../services/publicBookingApi.js'
+import SalonFrame from './SalonFrame.jsx'
 import './BookingPage.css'
 
 const emptyCustomer = {
@@ -201,12 +202,8 @@ export default function BookingPage() {
   const sent = confirmation?.booking?.emailDelivery === 'sent'
 
   return (
+    <SalonFrame salonName={salonName}>
     <main className="book-page">
-      <header className="book-page__header">
-        <p className="book-page__brand">{salonName}</p>
-        <h1>Book an Appointment</h1>
-      </header>
-
       {!configured ? (
         <p className="book-page__error" role="alert">Online booking is not configured yet.</p>
       ) : null}
@@ -214,6 +211,7 @@ export default function BookingPage() {
 
       {step === 'email' ? (
         <form className="book-page__card" onSubmit={continueEmail}>
+          <h2>Book your appointment</h2>
           <p>Enter your email to get started.</p>
           <label className="field">
             <span className="field__label">Email</span>
@@ -235,6 +233,7 @@ export default function BookingPage() {
 
       {step === 'details' ? (
         <form className="book-page__card" onSubmit={continueDetails}>
+          <h2>Your details</h2>
           <p>Tell us how to reach you. This is only needed the first time you book.</p>
           <CustomerForm
             value={customer}
@@ -313,5 +312,6 @@ export default function BookingPage() {
         </section>
       ) : null}
     </main>
+    </SalonFrame>
   )
 }

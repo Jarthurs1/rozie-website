@@ -82,6 +82,52 @@ export async function fetchAvailabilityRange(serviceId, from, to) {
   return request(`/availability?${q}`)
 }
 
+export async function fetchAppointment(token) {
+  const q = new URLSearchParams({ token })
+  return request(`/appointment?${q}`)
+}
+
+export async function confirmAppointment(token) {
+  return request('/appointment/confirm', {
+    method: 'POST',
+    body: JSON.stringify({ token }),
+  })
+}
+
+export async function cancelAppointment(token) {
+  return request('/appointment/cancel', {
+    method: 'POST',
+    body: JSON.stringify({ token }),
+  })
+}
+
+export async function requestReschedule(token, date, startTime) {
+  return request('/appointment/reschedule', {
+    method: 'POST',
+    body: JSON.stringify({ token, date, startTime }),
+  })
+}
+
+export async function fetchManagedAvailability(token, from, to) {
+  const q = new URLSearchParams({ token, from, to })
+  return request(`/availability?${q}`)
+}
+
+export async function fetchManagedTimes(token, date) {
+  const q = new URLSearchParams({ token, date })
+  return request(`/availability?${q}`)
+}
+
+export function appointmentTokenFromPath(pathname) {
+  const match = String(pathname || '').match(/^\/appointment\/([^/]+)\/?$/)
+  if (!match) return ''
+  try {
+    return decodeURIComponent(match[1])
+  } catch {
+    return ''
+  }
+}
+
 export async function submitBooking(payload) {
   return request('/book', {
     method: 'POST',

@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import {
+  appointmentTokenFromPath,
+  confirmAppointment,
   isPublicBookingConfigured,
   submitBooking,
 } from '../services/publicBookingApi.js'
@@ -44,5 +46,25 @@ describe('publicBookingApi client', () => {
         phone: '555-0100',
       }),
     ).rejects.toMatchObject({ status: 409, code: 'conflict' })
+  })
+
+  it('reads a management token from the public path', () => {
+    expect(appointmentTokenFromPath('/appointment/abc.def')).toBe('abc.def')
+    expect(appointmentTokenFromPath('/')).toBe('')
+  })
+
+  it('confirms with POST so a link preview cannot confirm', async () => {
+    import.meta.env.VITE_PUBLIC_BOOKING_API_URL = 'https://example.test'
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      text: async () => JSON.stringify({ ok: true, code: 'confirmed' }),
+    }))
+    vi.stubGlobal('fetch', fetchMock)
+    await confirmAppointment('tok')
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://example.test/appointment/confirm',
+      expect.objectContaining({ method: 'POST' }),
+    )
   })
 })
